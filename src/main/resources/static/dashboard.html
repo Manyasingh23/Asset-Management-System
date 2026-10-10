@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | AssetFlow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<div class="dashboard-container">
+
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">A</div>
+            <div>
+                <h1>AssetFlow</h1>
+                <p>Asset Management System</p>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">Log Out ↗</button>
+    </header>
+
+    <main class="main-content">
+        <section class="page-heading">
+            <div>
+                <p class="eyebrow">WORKSPACE / OVERVIEW</p>
+                <h2>Dashboard</h2>
+                <p class="muted">Manage your company assets and employees in one place.</p>
+            </div>
+            <p id="welcomeMessage" class="welcome-badge"></p>
+        </section>
+
+        
+<section class="summary-grid">
+    <article class="summary-card">
+        <span class="summary-icon blue">▣</span>
+        <p>Total Assets</p>
+        <h3 id="totalAssetsCount">Loading...</h3>
+        <span class="card-note">Registered company assets</span>
+    </article>
+
+    <article class="summary-card">
+        <span class="summary-icon purple">♙</span>
+        <p>Employees</p>
+        <h3 id="totalEmployeesCount">Loading...</h3>
+        <span class="card-note">Registered employees</span>
+    </article>
+
+    <article class="summary-card">
+        <span class="summary-icon green">✓</span>
+        <p>Asset Tracking</p>
+        <h3 id="assetTrackingCount">Loading...</h3>
+        <span class="card-note" id="assetTrackingNote">
+            Available and assigned assets
+        </span>
+    </article>
+</section>
+
+        <section id="adminSection" class="panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">ADMINISTRATION</p>
+                    <h2>Admin Actions</h2>
+                </div>
+                <span class="role-tag">ADMIN</span>
+            </div>
+            <div class="action-grid">
+                <button onclick="showAddAssetForm()" class="action-card">
+                    <span class="action-icon">＋</span>
+                    <span><strong>Add Asset</strong><small>Register a new asset</small></span>
+                    <span class="arrow">→</span>
+                </button>
+                <button onclick="loadAssets()" class="action-card">
+                    <span class="action-icon">▤</span>
+                    <span><strong>View All Assets</strong><small>Browse your inventory</small></span>
+                    <span class="arrow">→</span>
+                </button>
+                <button onclick="loadEmployees()" class="action-card">
+                    <span class="action-icon">♙</span>
+                    <span><strong>Manage Employees</strong><small>View employee records</small></span>
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="employeeSection" class="panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">WORKSPACE</p>
+                    <h2>Employee Actions</h2>
+                </div>
+            </div>
+            <button onclick="loadAssets()" class="primary-btn">View Assets →</button>
+        </section>
+
+        <section id="addAssetForm" class="panel form-panel">
+            <div class="section-heading">
+                <div><p class="eyebrow">INVENTORY</p><h2>Add New Asset</h2></div>
+            </div>
+            <div class="form-grid">
+                <input type="number" id="assetId" placeholder="Asset ID">
+                <input type="text" id="assetName" placeholder="Asset Name">
+                <input type="text" id="assetType" placeholder="Asset Type">
+                <input type="text" id="assetStatus" placeholder="Status" value="Available">
+            </div>
+            <button onclick="addAsset()" class="primary-btn">Save Asset</button>
+        </section>
+
+        <section id="employeeManagement" class="panel">
+            <div class="section-heading">
+                <div><p class="eyebrow">PEOPLE</p><h2>Employee Management</h2></div>
+            </div>
+            <button onclick="showAddEmployeeForm()" class="primary-btn">＋ Add Employee</button>
+
+            <div id="addEmployeeForm" class="form-panel">
+                <h3>Add New Employee</h3>
+                <div class="form-grid">
+                    <input type="number" id="employeeId" placeholder="Employee ID">
+                    <input type="text" id="employeeName" placeholder="Employee Name">
+                    <input type="email" id="employeeEmail" placeholder="Employee Email">
+                    <input type="text" id="employeeDepartment" placeholder="Department">
+                </div>
+                <button onclick="addEmployee()" class="primary-btn">Save Employee</button>
+            </div>
+
+            <div id="updateEmployeeForm" class="form-panel">
+                <h3>Update Employee</h3>
+                <div class="form-grid">
+                    <input type="text" id="updateEmployeeId" placeholder="Employee ID" readonly>
+                    <input type="text" id="updateEmployeeName" placeholder="Employee Name">
+                    <input type="email" id="updateEmployeeEmail" placeholder="Employee Email">
+                    <input type="text" id="updateEmployeeDepartment" placeholder="Department">
+                </div>
+                <button onclick="updateEmployee()" class="primary-btn">Update Employee</button>
+            </div>
+
+            <div id="employeesContainer"></div>
+        </section>
+
+        <section id="updateAssetForm" class="panel form-panel">
+            <div class="section-heading">
+                <div><p class="eyebrow">INVENTORY</p><h2>Update Asset</h2></div>
+            </div>
+            <div class="form-grid">
+                <input type="text" id="updateAssetId" placeholder="Asset ID" readonly>
+                <input type="text" id="updateAssetName" placeholder="Asset Name">
+                <input type="text" id="updateAssetType" placeholder="Asset Type">
+                <input type="text" id="updateAssetStatus" placeholder="Status">
+            
+                <select id="updateAssetEmployee">
+                <option value="">Not Assigned</option>
+            </select>
+            </div>
+            <button onclick="updateAsset()" class="primary-btn">Update Asset</button>
+        </section>
+
+        <section class="panel inventory-panel">
+            <div class="section-heading">
+                <div><p class="eyebrow">RECORDS</p><h2>Asset Inventory</h2></div>
+                <button onclick="loadAssets()" class="secondary-btn">Refresh List ↻</button>
+            </div>
+            <div id="assetsContainer"></div>
+        </section>
+
+        <footer class="footer">
+            <span>AssetFlow · Asset Management System</span>
+            <span>Built with Java · Spring Boot · MySQL</span>
+        </footer>
+    </main>
+</div>
+
+<script src="dashboard.js"></script>
+
+
+</body>
+</html>
